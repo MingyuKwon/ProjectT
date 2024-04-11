@@ -122,7 +122,7 @@ private:
 	UPROPERTY(VisibleAnyWhere)
 	bool bIsHighlighted;
 
-	UPROPERTY(VisibleAnyWhere)
+	UPROPERTY(EditAnywhere)
 	bool bIsOnBoard = false;
 
 	void SetHighlightStencilValue();
