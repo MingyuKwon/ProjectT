@@ -84,11 +84,11 @@ void UBTService_FindNearestEnemy::CheckEnemies(TArray<AActor*> ActorArray)
 		FString str = FString::Printf(TEXT("%s : %f"), *ClosestEnemy->GetName(), MinDistance);
 		if (OwningPawnCombat->GetObjectType() == EObjectType::EOT_ATTACKER)
 		{
-			//GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red , *str);
+			GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red , *str);
 		}
 		else
 		{
-			//GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Blue, *str);
+			GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Blue, *str);
 
 		}
 	}

@@ -40,10 +40,6 @@ void AXRDefensePlayerController::LeftClickCheck(float DeltaTime)
 			if (CurrentGrabActor && CurrentGrabActorOutLineInterface)
 			{
 
-				FString str = FString::Printf(TEXT("%s"), *CurrentGrabActor->GetName());
-				GEngine->AddOnScreenDebugMessage(1, 1, FColor::Blue, *str);
-
-
 				FVector MovingPoint = FromMouseToFloorTracingPoint + FVector::UpVector * PlaceUpwardValue;
 				CurrentGrabActorOutLineInterface->SetActorPosition(MovingPoint);
 
