@@ -18,4 +18,17 @@ AXRDefenceAIController::AXRDefenceAIController(const FObjectInitializer& ObjectI
 
 	CrowdComp = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
 
+	if (CrowdComp)
+	{
+		CrowdComp->SetCrowdSeparation(false);
+		CrowdComp->SetCrowdOptimizeTopology(false);
+		CrowdComp->SetCrowdAnticipateTurns(true);
+		CrowdComp->SetCrowdCollisionQueryRange(3000.f);
+
+
+		CrowdComp->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Low);
+
+	}
+
+
 }
