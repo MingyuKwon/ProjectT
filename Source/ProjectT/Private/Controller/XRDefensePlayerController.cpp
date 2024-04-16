@@ -152,16 +152,25 @@ void AXRDefensePlayerController::TraceUnderMouse()
 		return;
 	}
 
-	CheckOutLineInterface(UnderMouseHitResult.GetActor());
+	CheckOutLineInterface(UnderMouseHitResult.GetActor(), true);
 
 	//DrawDebugSphere(GetWorld(), UnderMouseHitResult.ImpactPoint, 20.f, 20, FColor::Red);
 
 
 }
 
-void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target)
+void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOverlapStart)
 {
 	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
+
+	if (!isOverlapStart && TargetOutLineInterface)
+	{
+		// 여기서 손가락 뗄 떄가 문제인데, 지금 하이라이트 되고 있는 놈이 뗴지는 것은 문제가 안되는데, 하이라이트 되고 있지 않은 놈이 떼질 때 같이 뗴지는 처리 되는 것이 문제
+		if (currentTarget != TargetOutLineInterface)
+		{
+			return;
+		}
+	}
 
 	pastTarget = currentTarget;
 	currentTarget = TargetOutLineInterface;

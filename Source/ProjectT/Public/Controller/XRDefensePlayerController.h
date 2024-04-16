@@ -21,7 +21,7 @@ public:
 	virtual void SetupInputComponent() override;
 
 	UFUNCTION(BlueprintCallable)
-	void CheckOutLineInterface(AActor* Target);
+	void CheckOutLineInterface(AActor* Target, bool isOverlapStart);
 
 protected:
 	virtual void BeginPlay() override;
