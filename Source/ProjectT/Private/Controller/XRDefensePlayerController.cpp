@@ -163,25 +163,35 @@ void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOv
 {
 	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
 
-	if (!isOverlapStart && TargetOutLineInterface)
+	if (isOverlapStart)
 	{
-		// 여기서 손가락 뗄 떄가 문제인데, 지금 하이라이트 되고 있는 놈이 뗴지는 것은 문제가 안되는데, 하이라이트 되고 있지 않은 놈이 떼질 때 같이 뗴지는 처리 되는 것이 문제
-		if (currentTarget != TargetOutLineInterface)
+		pastTarget = currentTarget;
+		currentTarget = TargetOutLineInterface;
+
+		if (pastTarget)
 		{
-			return;
+			pastTarget->SetHighLightOff();
+		}
+
+		if (currentTarget && !bIsLeftButtonPressed)
+		{
+			currentTarget->SetHighLightOn();
+		}
+	}
+	else // 만약 캐릭터에서 떼지면서 호출된 거라면 
+	{
+		// 만약 뗴는 캐릭터랑 현재 하이라이트 되어 있는 캐릭터가 같다면
+		if (currentTarget == TargetOutLineInterface)
+		{
+			pastTarget = currentTarget;
+			currentTarget = nullptr;
+
+			if (pastTarget)
+			{
+				pastTarget->SetHighLightOff();
+			}
+
 		}
 	}
 
-	pastTarget = currentTarget;
-	currentTarget = TargetOutLineInterface;
-
-	if (pastTarget)
-	{
-		pastTarget->SetHighLightOff();
-	}
-
-	if (currentTarget && !bIsLeftButtonPressed)
-	{
-		currentTarget->SetHighLightOn();
-	}
 }
