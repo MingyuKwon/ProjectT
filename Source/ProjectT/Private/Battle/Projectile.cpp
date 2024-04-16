@@ -68,7 +68,7 @@ void AProjectile::Destroyed()
 
     if (HitImpactParticle)
     {
-        UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitImpactParticle, GetActorLocation(), GetActorRotation());
+        UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitImpactParticle, GetActorLocation(), GetActorRotation(), FVector(0.1f, 0.1f, 0.1f));
     }
 }
 

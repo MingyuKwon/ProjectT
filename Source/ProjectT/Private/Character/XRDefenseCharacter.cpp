@@ -310,7 +310,7 @@ void AXRDefenseCharacter::Death()
 
 	if (DeathParticle)
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathParticle, GetActorLocation(), GetActorRotation());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathParticle, GetActorLocation(), GetActorRotation(), FVector(0.1f, 0.1f, 0.1f));
 	}
 
 	SetLifeSpan(DeathTime);
