@@ -19,12 +19,17 @@ class PROJECTT_API AXRDefensePlayerController : public APlayerController
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
+
+	UFUNCTION(BlueprintCallable)
+	void CheckOutLineInterface(AActor* Target);
+
 protected:
 	virtual void BeginPlay() override;
 
 
 private:
 	void TraceUnderMouse();
+
 
 	void OnLeftClickPressed();
 	void OnLeftClickReleased();

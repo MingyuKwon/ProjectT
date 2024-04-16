@@ -11,7 +11,7 @@ void AXRDefensePlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	TraceUnderMouse();
+	//TraceUnderMouse();
 	LeftClickCheck(DeltaTime);
 }
 
@@ -26,7 +26,6 @@ void AXRDefensePlayerController::SetupInputComponent()
 
 void AXRDefensePlayerController::LeftClickCheck(float DeltaTime)
 {
-
 	if (bIsLeftButtonPressed)
 	{
 		FHitResult LinetraceResult;
@@ -39,7 +38,6 @@ void AXRDefensePlayerController::LeftClickCheck(float DeltaTime)
 
 			if (CurrentGrabActor && CurrentGrabActorOutLineInterface)
 			{
-
 				FVector MovingPoint = FromMouseToFloorTracingPoint + FVector::UpVector * PlaceUpwardValue;
 				CurrentGrabActorOutLineInterface->SetActorPosition(MovingPoint);
 
@@ -154,7 +152,16 @@ void AXRDefensePlayerController::TraceUnderMouse()
 		return;
 	}
 
-	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(UnderMouseHitResult.GetActor());
+	CheckOutLineInterface(UnderMouseHitResult.GetActor());
+
+	//DrawDebugSphere(GetWorld(), UnderMouseHitResult.ImpactPoint, 20.f, 20, FColor::Red);
+
+
+}
+
+void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target)
+{
+	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
 
 	pastTarget = currentTarget;
 	currentTarget = TargetOutLineInterface;
@@ -168,8 +175,4 @@ void AXRDefensePlayerController::TraceUnderMouse()
 	{
 		currentTarget->SetHighLightOn();
 	}
-
-	//DrawDebugSphere(GetWorld(), UnderMouseHitResult.ImpactPoint, 20.f, 20, FColor::Red);
-
-
 }
