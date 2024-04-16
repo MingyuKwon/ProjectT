@@ -20,6 +20,7 @@ AXRDefenceAIController::AXRDefenceAIController(const FObjectInitializer& ObjectI
 
 	if (CrowdComp)
 	{
+		CrowdComp->SetCrowdObstacleAvoidance(false);
 		CrowdComp->SetCrowdSeparation(false);
 		CrowdComp->SetCrowdOptimizeTopology(false);
 		CrowdComp->SetCrowdAnticipateTurns(true);
