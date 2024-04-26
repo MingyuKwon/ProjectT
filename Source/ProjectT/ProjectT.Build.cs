@@ -14,10 +14,7 @@ public class ProjectT : ModuleRules
 			"Engine",
 			"InputCore",
 			"UMG",
-			"AIModule" ,
-			"OculusHandPoseRecognition",
-			"OculusInteractable",
-			"OculusUtils"});
+			"AIModule"});
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });
 
