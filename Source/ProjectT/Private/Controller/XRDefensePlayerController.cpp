@@ -7,47 +7,15 @@
 #include "ProjectT/ProjectT.h"
 
 
-void AXRDefensePlayerController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	//TraceUnderMouse();
-	LeftClickCheck(DeltaTime);
-}
-
 void AXRDefensePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction("LeftClick", IE_Pressed, this, &AXRDefensePlayerController::OnLeftClickPressed);
-	InputComponent->BindAction("LeftClick", IE_Released, this, &AXRDefensePlayerController::OnLeftClickReleased);
+	InputComponent->BindAction("LeftClick", IE_Pressed, this, &AXRDefensePlayerController::GrabStart);
+	InputComponent->BindAction("LeftClick", IE_Released, this, &AXRDefensePlayerController::GrabEnd);
 
 }
 
-void AXRDefensePlayerController::LeftClickCheck(float DeltaTime)
-{
-	if (bIsLeftButtonPressed)
-	{
-		FHitResult LinetraceResult;
-
-		LineTraceMouseToFloor(LinetraceResult);
-
-		if (LinetraceResult.bBlockingHit)
-		{
-			CurrentGrabActorOutLineInterface = CurrentGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentGrabActor) : CurrentGrabActorOutLineInterface;
-
-			if (CurrentGrabActor && CurrentGrabActorOutLineInterface)
-			{
-				FVector MovingPoint = FromMouseToFloorTracingPoint + FVector::UpVector * PlaceUpwardValue;
-				CurrentGrabActorOutLineInterface->SetActorPosition(MovingPoint);
-
-				CurrentGrabActorOutLineInterface->SetHighLightOn();
-			}
-		}
-
-
-	}
-}
 
 void AXRDefensePlayerController::LineTraceMouseToFloor(FHitResult& LinetraceResult)
 {
@@ -69,9 +37,9 @@ void AXRDefensePlayerController::LineTraceMouseToFloor(FHitResult& LinetraceResu
 
 }
 
-void AXRDefensePlayerController::OnLeftClickPressed()
+void AXRDefensePlayerController::GrabStart()
 {
-	bIsLeftButtonPressed = true;
+	bGrabGestureAvailable = true;
 
 	// 물체를 집을 수 있는 경우는, 마우스가 물체 위에 있고, 그 물체가 하이라이트 되어 있고, 그 물체가 보드위에 있지 않은 경우에만 가능
 	if (currentTarget && currentTarget->GetIsHighlighted() && !currentTarget->GetIsOnBoard())
@@ -81,9 +49,9 @@ void AXRDefensePlayerController::OnLeftClickPressed()
 
 }
 
-void AXRDefensePlayerController::OnLeftClickReleased()
+void AXRDefensePlayerController::GrabEnd()
 {
-	bIsLeftButtonPressed = false;
+	bGrabGestureAvailable = false;
 	CurrentGrabActor = nullptr;
 
 	if (CurrentGrabActorOutLineInterface)
@@ -94,6 +62,28 @@ void AXRDefensePlayerController::OnLeftClickReleased()
 		CurrentGrabActorOutLineInterface->SetHighLightOff();
 	}
 	CurrentGrabActorOutLineInterface = nullptr;
+}
+
+bool AXRDefensePlayerController::GrabCheck(float DeltaTime , FVector GrabPosition)
+{
+	if (bGrabGestureAvailable)
+	{
+		CurrentGrabActorOutLineInterface = CurrentGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentGrabActor) : CurrentGrabActorOutLineInterface;
+
+		if (CurrentGrabActor && CurrentGrabActorOutLineInterface)
+		{
+			FVector MovingPoint = GrabPosition + FVector::ForwardVector * PlaceUpwardValue;
+			CurrentGrabActorOutLineInterface->SetActorPosition(MovingPoint);
+
+			CurrentGrabActorOutLineInterface->SetHighLightOn();
+			return true;
+
+		}
+
+	}
+
+	return false;
+
 }
 
 
@@ -159,7 +149,7 @@ void AXRDefensePlayerController::TraceUnderMouse()
 
 }
 
-void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOverlapStart)
+bool AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOverlapStart)
 {
 	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
 
@@ -173,10 +163,12 @@ void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOv
 			pastTarget->SetHighLightOff();
 		}
 
-		if (currentTarget && !bIsLeftButtonPressed)
+		if (currentTarget && !bGrabGestureAvailable)
 		{
 			currentTarget->SetHighLightOn();
+			return true;
 		}
+
 	}
 	else // 만약 캐릭터에서 떼지면서 호출된 거라면 
 	{
@@ -193,5 +185,8 @@ void AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOv
 
 		}
 	}
+
+	return false;
+
 
 }

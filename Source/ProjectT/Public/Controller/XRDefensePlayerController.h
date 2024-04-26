@@ -17,11 +17,10 @@ class PROJECTT_API AXRDefensePlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-	virtual void Tick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
 
 	UFUNCTION(BlueprintCallable)
-	void CheckOutLineInterface(AActor* Target, bool isOverlapStart);
+	bool CheckOutLineInterface(AActor* Target, bool isOverlapStart);
 
 protected:
 	virtual void BeginPlay() override;
@@ -30,17 +29,20 @@ protected:
 private:
 	void TraceUnderMouse();
 
+	UFUNCTION(BlueprintCallable)
+	void GrabStart();
 
-	void OnLeftClickPressed();
-	void OnLeftClickReleased();
+	UFUNCTION(BlueprintCallable)
+	void GrabEnd();
 
-	void LeftClickCheck(float DeltaTime);
+	UFUNCTION(BlueprintCallable)
+	bool GrabCheck(float DeltaTime, FVector GrabPosition);
 
 	// 현재 마우스의 위치를 바닥에 투영하면 어디에 부딪히는지를 구한다
 	void LineTraceMouseToFloor(FHitResult& LinetraceResult);
 	bool CheckBeneathIsBoard(IOutlineInterface* target);
 
-	bool bIsLeftButtonPressed = false;
+	bool bGrabGestureAvailable = false;
 	FVector FromMouseToFloorTracingPoint;
 	AActor* CurrentGrabActor = nullptr;
 	IOutlineInterface* CurrentGrabActorOutLineInterface = nullptr;
