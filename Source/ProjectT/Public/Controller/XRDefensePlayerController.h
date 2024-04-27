@@ -20,35 +20,61 @@ public:
 	virtual void SetupInputComponent() override;
 
 	UFUNCTION(BlueprintCallable)
-	bool CheckOutLineInterface(AActor* Target, bool isOverlapStart);
+	bool CheckOutLineInterfaceLeft(AActor* Target, bool isOverlapStart);
+
+	UFUNCTION(BlueprintCallable)
+	bool CheckOutLineInterfaceRight(AActor* Target, bool isOverlapStart);
+
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bGrabGestureAvailable = false;
 
 protected:
 	virtual void BeginPlay() override;
 
 
 private:
-	void TraceUnderMouse();
+	//void TraceUnderMouse();
 
 	UFUNCTION(BlueprintCallable)
-	void GrabStart();
+	void LeftGrabStart();
+	UFUNCTION(BlueprintCallable)
+	void LeftGrabEnd();
+	UFUNCTION(BlueprintCallable)
+	bool LeftGrabCheck(float DeltaTime, FVector GrabPosition);
+
+	AActor* CurrentLeftGrabActor = nullptr;
+	IOutlineInterface* CurrentLeftGrabActorOutLineInterface = nullptr;
+
+	IOutlineInterface* pastLeftTarget = nullptr;
+	IOutlineInterface* currentLeftTarget = nullptr;
+
+
 
 	UFUNCTION(BlueprintCallable)
-	void GrabEnd();
-
+	void RightGrabStart();
 	UFUNCTION(BlueprintCallable)
-	bool GrabCheck(float DeltaTime, FVector GrabPosition);
+	void RightGrabEnd();
+	UFUNCTION(BlueprintCallable)
+	bool RightGrabCheck(float DeltaTime, FVector GrabPosition);
+
+	AActor* CurrentRightGrabActor = nullptr;
+	IOutlineInterface* CurrentRightGrabActorOutLineInterface = nullptr;
+
+	IOutlineInterface* pastRightTarget = nullptr;
+	IOutlineInterface* currentRightTarget = nullptr;
+
 
 	// 현재 마우스의 위치를 바닥에 투영하면 어디에 부딪히는지를 구한다
-	void LineTraceMouseToFloor(FHitResult& LinetraceResult);
+	//void LineTraceMouseToFloor(FHitResult& LinetraceResult);
+
 	bool CheckBeneathIsBoard(IOutlineInterface* target);
 
-	bool bGrabGestureAvailable = false;
-	FVector FromMouseToFloorTracingPoint;
-	AActor* CurrentGrabActor = nullptr;
-	IOutlineInterface* CurrentGrabActorOutLineInterface = nullptr;
 
-	IOutlineInterface* pastTarget = nullptr;
-	IOutlineInterface* currentTarget = nullptr;
+
+	//FVector FromMouseToFloorTracingPoint;
+
+
 
 
 	UPROPERTY(EditAnywhere)

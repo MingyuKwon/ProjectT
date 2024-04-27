@@ -11,71 +11,93 @@ void AXRDefensePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction("LeftClick", IE_Pressed, this, &AXRDefensePlayerController::GrabStart);
-	InputComponent->BindAction("LeftClick", IE_Released, this, &AXRDefensePlayerController::GrabEnd);
+	//InputComponent->BindAction("LeftClick", IE_Pressed, this, &AXRDefensePlayerController::LeftGrabStart);
+	//InputComponent->BindAction("LeftClick", IE_Released, this, &AXRDefensePlayerController::LeftGrabEnd);
 
 }
 
-
-void AXRDefensePlayerController::LineTraceMouseToFloor(FHitResult& LinetraceResult)
+void AXRDefensePlayerController::LeftGrabStart()
 {
-	float ScreenX;
-	float ScreenY;
-	GetMousePosition(ScreenX, ScreenY);
-
-	FVector WorldLocation;
-	FVector WorldDirection;
-
-	DeprojectScreenPositionToWorld(ScreenX, ScreenY, WorldLocation, WorldDirection);
-
-	GetWorld()->LineTraceSingleByChannel(LinetraceResult, WorldLocation, WorldLocation + WorldDirection * TRACE_LENGTH, ECollisionChannel::ECC_FloorTraceChannel);
-
-	if (LinetraceResult.bBlockingHit)
-	{
-		FromMouseToFloorTracingPoint = LinetraceResult.ImpactPoint;
-	}
-
-}
-
-void AXRDefensePlayerController::GrabStart()
-{
-	bGrabGestureAvailable = true;
-
 	// 물체를 집을 수 있는 경우는, 마우스가 물체 위에 있고, 그 물체가 하이라이트 되어 있고, 그 물체가 보드위에 있지 않은 경우에만 가능
-	if (currentTarget && currentTarget->GetIsHighlighted() && !currentTarget->GetIsOnBoard())
+	if (currentLeftTarget && currentLeftTarget->GetIsHighlighted() && !currentLeftTarget->GetIsOnBoard())
 	{
-		CurrentGrabActor = Cast<AActor>(currentTarget);
+		CurrentLeftGrabActor = Cast<AActor>(currentLeftTarget);
 	}
 
 }
 
-void AXRDefensePlayerController::GrabEnd()
+void AXRDefensePlayerController::RightGrabStart()
 {
-	bGrabGestureAvailable = false;
-	CurrentGrabActor = nullptr;
+	// 물체를 집을 수 있는 경우는, 마우스가 물체 위에 있고, 그 물체가 하이라이트 되어 있고, 그 물체가 보드위에 있지 않은 경우에만 가능
+	if (currentRightTarget && currentRightTarget->GetIsHighlighted() && !currentRightTarget->GetIsOnBoard())
+	{
+		CurrentRightGrabActor = Cast<AActor>(currentRightTarget);
+	}
 
-	if (CurrentGrabActorOutLineInterface)
+}
+
+void AXRDefensePlayerController::LeftGrabEnd()
+{
+	CurrentLeftGrabActor = nullptr;
+
+	if (CurrentLeftGrabActorOutLineInterface)
 	{
 		// 자기 아래에 보드가 있는지 없는지 확인하고 그 값을 인터페이스의 set board 함수를 사용해서 배정한다
-		CurrentGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentGrabActorOutLineInterface));
+		CurrentLeftGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentLeftGrabActorOutLineInterface));
 
-		CurrentGrabActorOutLineInterface->SetHighLightOff();
+		CurrentLeftGrabActorOutLineInterface->SetHighLightOff();
 	}
-	CurrentGrabActorOutLineInterface = nullptr;
+	CurrentLeftGrabActorOutLineInterface = nullptr;
 }
 
-bool AXRDefensePlayerController::GrabCheck(float DeltaTime , FVector GrabPosition)
+void AXRDefensePlayerController::RightGrabEnd()
+{
+	CurrentRightGrabActor = nullptr;
+
+	if (CurrentRightGrabActorOutLineInterface)
+	{
+		// 자기 아래에 보드가 있는지 없는지 확인하고 그 값을 인터페이스의 set board 함수를 사용해서 배정한다
+		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentRightGrabActorOutLineInterface));
+
+		CurrentRightGrabActorOutLineInterface->SetHighLightOff();
+	}
+	CurrentRightGrabActorOutLineInterface = nullptr;
+}
+
+bool AXRDefensePlayerController::LeftGrabCheck(float DeltaTime , FVector GrabPosition)
 {
 	if (bGrabGestureAvailable)
 	{
-		CurrentGrabActorOutLineInterface = CurrentGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentGrabActor) : CurrentGrabActorOutLineInterface;
+		CurrentLeftGrabActorOutLineInterface = CurrentLeftGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentLeftGrabActor) : CurrentLeftGrabActorOutLineInterface;
 
-		if (CurrentGrabActor && CurrentGrabActorOutLineInterface)
+		if (CurrentLeftGrabActor && CurrentLeftGrabActorOutLineInterface)
 		{
 			FVector MovingPoint = GrabPosition + FVector::ForwardVector * PlaceUpwardValue;
-			CurrentGrabActorOutLineInterface->SetActorPosition(MovingPoint);
+			CurrentLeftGrabActorOutLineInterface->SetActorPosition(MovingPoint);
 
-			CurrentGrabActorOutLineInterface->SetHighLightOn();
+			CurrentLeftGrabActorOutLineInterface->SetHighLightOn();
+			return true;
+
+		}
+
+	}
+
+	return false;
+
+}
+
+bool AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPosition)
+{
+	if (bGrabGestureAvailable)
+	{
+		CurrentRightGrabActorOutLineInterface = CurrentRightGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentRightGrabActor) : CurrentRightGrabActorOutLineInterface;
+
+		if (CurrentRightGrabActor && CurrentRightGrabActorOutLineInterface)
+		{
+			FVector MovingPoint = GrabPosition + FVector::ForwardVector * PlaceUpwardValue;
+			CurrentRightGrabActorOutLineInterface->SetActorPosition(MovingPoint);
+
+			CurrentRightGrabActorOutLineInterface->SetHighLightOn();
 			return true;
 
 		}
@@ -118,7 +140,97 @@ void AXRDefensePlayerController::BeginPlay()
 
 }
 
+bool AXRDefensePlayerController::CheckOutLineInterfaceLeft(AActor* Target, bool isOverlapStart)
+{
+	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
 
+	if (isOverlapStart)
+	{
+		pastLeftTarget = currentLeftTarget;
+		currentLeftTarget = TargetOutLineInterface;
+
+		if (pastLeftTarget)
+		{
+			pastLeftTarget->SetHighLightOff();
+		}
+
+		if (currentLeftTarget && !bGrabGestureAvailable)
+		{
+			currentLeftTarget->SetHighLightOn();
+			return true;
+		}
+
+	}
+	else // 만약 캐릭터에서 떼지면서 호출된 거라면 
+	{
+		pastLeftTarget = currentLeftTarget;
+		currentLeftTarget = nullptr;
+
+		if (pastLeftTarget)
+		{
+			pastLeftTarget->SetHighLightOff();
+		}
+
+		// 만약 뗴는 캐릭터랑 현재 하이라이트 되어 있는 캐릭터가 같다면
+		if (currentLeftTarget == TargetOutLineInterface)
+		{
+			
+
+		}
+	}
+
+	return false;
+
+
+}
+
+bool AXRDefensePlayerController::CheckOutLineInterfaceRight(AActor* Target, bool isOverlapStart)
+{
+	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
+
+	if (isOverlapStart)
+	{
+		pastRightTarget = currentRightTarget;
+		currentRightTarget = TargetOutLineInterface;
+
+		if (pastRightTarget)
+		{
+			pastRightTarget->SetHighLightOff();
+		}
+
+		if (currentRightTarget && !bGrabGestureAvailable)
+		{
+			currentRightTarget->SetHighLightOn();
+			return true;
+		}
+
+	}
+	else // 만약 캐릭터에서 떼지면서 호출된 거라면 
+	{
+		pastRightTarget = currentRightTarget;
+		currentRightTarget = nullptr;
+
+		if (pastRightTarget)
+		{
+			pastRightTarget->SetHighLightOff();
+		}
+
+		// 만약 뗴는 캐릭터랑 현재 하이라이트 되어 있는 캐릭터가 같다면
+		if (currentRightTarget == TargetOutLineInterface)
+		{
+			
+
+		}
+	}
+
+	return false;
+}
+
+////////////////////////////////////////// Deprecated /////////////////////////////////////////////////////
+
+////////////////////////////////////////// Deprecated /////////////////////////////////////////////////////
+
+/*
 void AXRDefensePlayerController::TraceUnderMouse()
 {
 	FHitResult UnderMouseHitResult;
@@ -148,45 +260,26 @@ void AXRDefensePlayerController::TraceUnderMouse()
 
 
 }
+*/
 
-bool AXRDefensePlayerController::CheckOutLineInterface(AActor* Target, bool isOverlapStart)
+/*
+void AXRDefensePlayerController::LineTraceMouseToFloor(FHitResult& LinetraceResult)
 {
-	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
+	float ScreenX;
+	float ScreenY;
+	GetMousePosition(ScreenX, ScreenY);
 
-	if (isOverlapStart)
+	FVector WorldLocation;
+	FVector WorldDirection;
+
+	DeprojectScreenPositionToWorld(ScreenX, ScreenY, WorldLocation, WorldDirection);
+
+	GetWorld()->LineTraceSingleByChannel(LinetraceResult, WorldLocation, WorldLocation + WorldDirection * TRACE_LENGTH, ECollisionChannel::ECC_FloorTraceChannel);
+
+	if (LinetraceResult.bBlockingHit)
 	{
-		pastTarget = currentTarget;
-		currentTarget = TargetOutLineInterface;
-
-		if (pastTarget)
-		{
-			pastTarget->SetHighLightOff();
-		}
-
-		if (currentTarget && !bGrabGestureAvailable)
-		{
-			currentTarget->SetHighLightOn();
-			return true;
-		}
-
+		FromMouseToFloorTracingPoint = LinetraceResult.ImpactPoint;
 	}
-	else // 만약 캐릭터에서 떼지면서 호출된 거라면 
-	{
-		// 만약 뗴는 캐릭터랑 현재 하이라이트 되어 있는 캐릭터가 같다면
-		if (currentTarget == TargetOutLineInterface)
-		{
-			pastTarget = currentTarget;
-			currentTarget = nullptr;
-
-			if (pastTarget)
-			{
-				pastTarget->SetHighLightOff();
-			}
-
-		}
-	}
-
-	return false;
-
 
 }
+*/
