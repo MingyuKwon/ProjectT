@@ -96,7 +96,7 @@ void AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPos
 
 		if (CurrentRightGrabActor && CurrentRightGrabActorOutLineInterface)
 		{
-			FVector MovingPoint = GrabPosition + FVector::ForwardVector * PlaceUpwardValue;
+			FVector MovingPoint = GrabPosition;
 			CurrentRightGrabActorOutLineInterface->SetActorPosition(MovingPoint);
 			MovingPointLocation = MovingPoint;
 
