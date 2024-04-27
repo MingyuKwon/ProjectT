@@ -41,7 +41,7 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void LeftGrabEnd();
 	UFUNCTION(BlueprintCallable)
-	bool LeftGrabCheck(float DeltaTime, FVector GrabPosition);
+	void LeftGrabCheck(float DeltaTime, FVector GrabPosition, FVector& MovingPointLocation);
 
 	AActor* CurrentLeftGrabActor = nullptr;
 	IOutlineInterface* CurrentLeftGrabActorOutLineInterface = nullptr;
@@ -56,7 +56,7 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void RightGrabEnd();
 	UFUNCTION(BlueprintCallable)
-	bool RightGrabCheck(float DeltaTime, FVector GrabPosition);
+	void RightGrabCheck(float DeltaTime, FVector GrabPosition, FVector& MovingPointLocation);
 
 	AActor* CurrentRightGrabActor = nullptr;
 	IOutlineInterface* CurrentRightGrabActorOutLineInterface = nullptr;
