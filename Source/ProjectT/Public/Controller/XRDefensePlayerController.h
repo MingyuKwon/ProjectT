@@ -20,14 +20,25 @@ public:
 	virtual void SetupInputComponent() override;
 
 	UFUNCTION(BlueprintCallable)
+	void CheckLeftOverlappingActors(class UCapsuleComponent* CollisionComponent);
+
+	UFUNCTION(BlueprintCallable)
+	void CheckRightOverlappingActors(class UCapsuleComponent* CollisionComponent);
+
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bLeftGrabGestureAvailable = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bRightGrabGestureAvailable = false;
+
+	
+	///////////////////////////////Depricated///////////////////////////////////
+	UFUNCTION(BlueprintCallable)
 	bool CheckOutLineInterfaceLeft(AActor* Target, bool isOverlapStart);
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckOutLineInterfaceRight(AActor* Target, bool isOverlapStart);
-
-
-	UPROPERTY(BlueprintReadWrite)
-	bool bGrabGestureAvailable = false;
 
 protected:
 	virtual void BeginPlay() override;
