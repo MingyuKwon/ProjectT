@@ -51,6 +51,9 @@ protected:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	UPROPERTY(BlueprintReadOnly)
+	AActor* CombatTarget = nullptr;
+
 
 
 private:
@@ -161,8 +164,6 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void FireBullet();
-
-	AActor* CombatTarget = nullptr;
 
 	bool isDead = false;
 

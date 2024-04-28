@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectT/ProjectT.h"
+#include "Components/CapsuleComponent.h"
 
 
 void AXRDefensePlayerController::SetupInputComponent()
@@ -68,7 +69,7 @@ void AXRDefensePlayerController::LeftGrabCheck(float DeltaTime , FVector GrabPos
 {
 	MovingPointLocation = FVector::ZeroVector;
 
-	if (bGrabGestureAvailable)
+	if (bLeftGrabGestureAvailable)
 	{
 		CurrentLeftGrabActorOutLineInterface = CurrentLeftGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentLeftGrabActor) : CurrentLeftGrabActorOutLineInterface;
 
@@ -90,7 +91,7 @@ void AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPos
 	MovingPointLocation = FVector::ZeroVector;
 
 
-	if (bGrabGestureAvailable)
+	if (bRightGrabGestureAvailable)
 	{
 		CurrentRightGrabActorOutLineInterface = CurrentRightGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentRightGrabActor) : CurrentRightGrabActorOutLineInterface;
 
@@ -138,6 +139,98 @@ void AXRDefensePlayerController::BeginPlay()
 
 }
 
+void AXRDefensePlayerController::CheckLeftOverlappingActors(UCapsuleComponent* CollisionComponent)
+{
+	TArray<AActor*> OverlappingActors;
+	CollisionComponent->GetOverlappingActors(OverlappingActors);
+
+	IOutlineInterface* FinalTargetOutLineInterface = nullptr;
+
+	for (AActor* Actor : OverlappingActors)
+	{
+		IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Actor);
+
+		// 만약 겹치는 물체가 interface 상속을 받는다면
+		if (TargetOutLineInterface)
+		{
+			//하이라이트를 그 물체로 옮김
+			FinalTargetOutLineInterface = TargetOutLineInterface;
+
+			// 그리고 그 물체가 현재 하이라이트 되고 있는 물체라면
+			if (TargetOutLineInterface == currentLeftTarget)
+			{
+				//반복문 종료
+				break;
+			}
+		}
+	}
+
+	// 이 결과로, 만약 기존에 겹치고 있던 것과 동일한 것이 겹치게 된다면 그 물체가 우선적으로 하이라이트 된다
+	// 만약 겹치는게 기존 것이 없고 새로운 것만 있다면 그 물체가 하이라이트
+
+	pastLeftTarget = currentLeftTarget;
+	currentLeftTarget = FinalTargetOutLineInterface;
+
+	if (pastLeftTarget && (pastLeftTarget != currentLeftTarget))
+	{
+		pastLeftTarget->SetHighLightOff();
+	}
+
+	if (currentLeftTarget && !bLeftGrabGestureAvailable)
+	{
+		currentLeftTarget->SetHighLightOn();
+	}
+}
+
+void AXRDefensePlayerController::CheckRightOverlappingActors(UCapsuleComponent* CollisionComponent)
+{
+	TArray<AActor*> OverlappingActors;
+	CollisionComponent->GetOverlappingActors(OverlappingActors);
+
+	IOutlineInterface* FinalTargetOutLineInterface = nullptr;
+
+	for (AActor* Actor : OverlappingActors)
+	{
+		IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Actor);
+
+		// 만약 겹치는 물체가 interface 상속을 받는다면
+		if (TargetOutLineInterface)
+		{
+			//하이라이트를 그 물체로 옮김
+			FinalTargetOutLineInterface = TargetOutLineInterface;
+
+			// 그리고 그 물체가 현재 하이라이트 되고 있는 물체라면
+			if (TargetOutLineInterface == currentRightTarget)
+			{
+				//반복문 종료
+				break;
+			}
+		}
+	}
+
+	// 이 결과로, 만약 기존에 겹치고 있던 것과 동일한 것이 겹치게 된다면 그 물체가 우선적으로 하이라이트 된다
+	// 만약 겹치는게 기존 것이 없고 새로운 것만 있다면 그 물체가 하이라이트
+
+	pastRightTarget = currentRightTarget;
+	currentRightTarget = FinalTargetOutLineInterface;
+
+	if (pastRightTarget && (pastRightTarget != currentRightTarget))
+	{
+		pastRightTarget->SetHighLightOff();
+	}
+
+	if (currentRightTarget && !bRightGrabGestureAvailable)
+	{
+		currentRightTarget->SetHighLightOn();
+	}
+}
+
+
+////////////////////////////////////////// Deprecated /////////////////////////////////////////////////////
+
+////////////////////////////////////////// Deprecated /////////////////////////////////////////////////////
+
+
 bool AXRDefensePlayerController::CheckOutLineInterfaceLeft(AActor* Target, bool isOverlapStart)
 {
 	IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Target);
@@ -152,7 +245,7 @@ bool AXRDefensePlayerController::CheckOutLineInterfaceLeft(AActor* Target, bool 
 			pastLeftTarget->SetHighLightOff();
 		}
 
-		if (currentLeftTarget && !bGrabGestureAvailable)
+		if (currentLeftTarget && !bLeftGrabGestureAvailable)
 		{
 			currentLeftTarget->SetHighLightOn();
 			return true;
@@ -167,13 +260,6 @@ bool AXRDefensePlayerController::CheckOutLineInterfaceLeft(AActor* Target, bool 
 		if (pastLeftTarget)
 		{
 			pastLeftTarget->SetHighLightOff();
-		}
-
-		// 만약 뗴는 캐릭터랑 현재 하이라이트 되어 있는 캐릭터가 같다면
-		if (currentLeftTarget == TargetOutLineInterface)
-		{
-			
-
 		}
 	}
 
@@ -196,7 +282,7 @@ bool AXRDefensePlayerController::CheckOutLineInterfaceRight(AActor* Target, bool
 			pastRightTarget->SetHighLightOff();
 		}
 
-		if (currentRightTarget && !bGrabGestureAvailable)
+		if (currentRightTarget && !bRightGrabGestureAvailable)
 		{
 			currentRightTarget->SetHighLightOn();
 			return true;
@@ -212,21 +298,11 @@ bool AXRDefensePlayerController::CheckOutLineInterfaceRight(AActor* Target, bool
 		{
 			pastRightTarget->SetHighLightOff();
 		}
-
-		// 만약 뗴는 캐릭터랑 현재 하이라이트 되어 있는 캐릭터가 같다면
-		if (currentRightTarget == TargetOutLineInterface)
-		{
-			
-
-		}
 	}
 
 	return false;
 }
 
-////////////////////////////////////////// Deprecated /////////////////////////////////////////////////////
-
-////////////////////////////////////////// Deprecated /////////////////////////////////////////////////////
 
 /*
 void AXRDefensePlayerController::TraceUnderMouse()
