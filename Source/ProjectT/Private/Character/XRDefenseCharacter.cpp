@@ -43,8 +43,14 @@ AXRDefenseCharacter::AXRDefenseCharacter()
 	CharacterFloorMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	CharacterFloorMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 
-	HealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(FName("Health Bar"));
-	HealthWidgetComponent->SetupAttachment(RootComponent);
+	HealthBarBaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Health Base Bar 3D"));
+	HealthBarBaseMesh->SetupAttachment(RootComponent);
+	HealthBarBaseMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	HealthBarMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Health Bar 3D"));
+	HealthBarMesh->SetupAttachment(HealthBarBaseMesh);
+	HealthBarMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 
 
 }
@@ -81,7 +87,7 @@ void AXRDefenseCharacter::BeginPlay()
 	FloorMeshFirstStartPosition = CharacterFloorMesh->GetComponentLocation();
 	LastPlacablePosition = GetActorLocation();
 
-	UpdateHealthBarWidget();
+	UpdateHealthBarWidget(Health / MaxHealth);
 
 	SetHighLightShowEnable(false);
 
@@ -113,7 +119,7 @@ float AXRDefenseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Da
 	Health -= ActualDamage;
 	Health = FMath::Clamp(Health, 0, MaxHealth);
 
-	UpdateHealthBarWidget();
+	UpdateHealthBarWidget(Health / MaxHealth);
 
 	GetMesh()->SetMaterial(0, DamagedMaterial);
 
@@ -143,17 +149,6 @@ void AXRDefenseCharacter::DamageMaterialStartTimer(float TimeDuration)
 	GetWorld()->GetTimerManager().SetTimer(DamageMaterialTimerHandle, this, &AXRDefenseCharacter::DamageMaterialTimerExpired, TimeDuration, false);
 }
 
-void AXRDefenseCharacter::UpdateHealthBarWidget()
-{
-	if (HealthWidgetComponent == nullptr) return;
-
-	HealthBarWidget = HealthBarWidget == nullptr ? Cast<UHealthBarWidget>(HealthWidgetComponent->GetUserWidgetObject()) : HealthBarWidget;
-
-	if (HealthBarWidget)
-	{
-		HealthBarWidget->SetHealthBarPercent(Health / MaxHealth);
-	}
-}
 
 
 void AXRDefenseCharacter::Tick(float DeltaTime)
@@ -346,7 +341,6 @@ void AXRDefenseCharacter::SetHighlightStencilValue()
 {
 	GetMesh()->SetCustomDepthStencilValue(WHITE_STENCIL);
 	CharacterFloorMesh->SetCustomDepthStencilValue(WHITE_STENCIL);
-
 }
 
 void AXRDefenseCharacter::SetDefaultStencilValue()
