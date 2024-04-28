@@ -39,13 +39,14 @@ protected:
 	UPROPERTY(VisibleAnyWhere)
 	UStaticMeshComponent* CharacterFloorMesh;
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly)
-	UWidgetComponent* HealthWidgetComponent;
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite)
+	UStaticMeshComponent* HealthBarBaseMesh;
 
-	UPROPERTY()
-	UHealthBarWidget* HealthBarWidget;
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite)
+	UStaticMeshComponent* HealthBarMesh;
 
-	void UpdateHealthBarWidget();
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHealthBarWidget(float percent);
 
 	virtual void PossessedBy(AController* NewController) override;
 
@@ -127,6 +128,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	bool bIsOnBoard = false;
+
 
 	void SetHighlightStencilValue();
 	void SetDefaultStencilValue();

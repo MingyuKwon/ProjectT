@@ -26,14 +26,18 @@ AProjectile::AProjectile()
     BulletMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     BulletMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
+    
     Projectile_Movement = CreateDefaultSubobject<UNotHitSelf_PMC>(FName("NoProjectile Movement"));
-    Projectile_Movement->bIsHomingProjectile = true;
+    Projectile_Movement->bIsHomingProjectile = false;
     Projectile_Movement->HomingAccelerationMagnitude = 2000.f; // 유도 탄의 홈밍 가속도 설정
 
     Projectile_Movement->bRotationFollowsVelocity = true;
     Projectile_Movement->MaxSpeed = 10000.f;
     Projectile_Movement->InitialSpeed = 2000.f; // 초기 속도 설정
+    
+    
 }
+
 
 void AProjectile::SetTarget(AActor* Target)
 {
@@ -43,10 +47,12 @@ void AProjectile::SetTarget(AActor* Target)
         UPrimitiveComponent* TargetComponent = Cast<UPrimitiveComponent>(Target->GetRootComponent());
         if (TargetComponent)
         {
-            Projectile_Movement->HomingTargetComponent = TargetComponent;
+            //Projectile_Movement->HomingTargetComponent = TargetComponent;
         }
     }
 }
+
+
 
 void AProjectile::SetDamage(float Damage)
 {
@@ -89,5 +95,4 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 void AProjectile::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    // Tick에서의 추가적인 로직 (필요한 경우)
 }
