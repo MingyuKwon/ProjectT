@@ -28,7 +28,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCapsuleComponent* Capsule;
 
-	virtual void Destroyed() override;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* HitImpactSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UNiagaraSystem* HitImpactParticle;
+
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -38,12 +43,6 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	UPROPERTY(EditAnywhere)
-	USoundBase* HitImpactSound;
-
-	UPROPERTY(EditAnywhere)
-	UParticleSystem* HitImpactParticle;
 
 
 public:
