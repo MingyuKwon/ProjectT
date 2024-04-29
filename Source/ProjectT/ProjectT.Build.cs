@@ -14,7 +14,9 @@ public class ProjectT : ModuleRules
 			"Engine",
 			"InputCore",
 			"UMG",
-			"AIModule"});
+			"AIModule",
+            "Niagara"
+        });
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });
 
