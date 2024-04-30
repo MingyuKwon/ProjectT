@@ -15,19 +15,22 @@
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundBase.h"
 #include "Materials/MaterialInterface.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
+
 
 
 AXRDefenseCharacter::AXRDefenseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ÀüÃ¼ÀûÀÎ Ãæ°Ý °¨Áö Ä¸½¶Àº Ä«¸Þ¶ó¿Í ºÎµúÈ÷Áö ¾Êµµ·Ï ÇÔ
+	// ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¸ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
 
-	// ¸ó½ºÅÍ ¿¡¼ÂÀº Ãæµ¹À» ¾Æ¿¹ ¾ø¾Ú
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
@@ -59,7 +62,7 @@ void AXRDefenseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ÃÊ±â¿¡ ¾î¶² Å×µÎ¸® »öÀÌ µÉ Áö Á¤ÇÔ
+	// ï¿½Ê±â¿¡ ï¿½î¶² ï¿½×µÎ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	SetDefaultStencilValue();
 
 	switch (objectType)
@@ -188,7 +191,7 @@ void AXRDefenseCharacter::SetHighLightOn()
 
 void AXRDefenseCharacter::SetHighLightOff()
 {
-	// ¸¸¾à ¾Æ·¡¿¡ º¸µå°¡ ¾ø°í ÇÏÀÌ¶óÀÌÆ®µµ »ç¶óÁö¸é ±× ¶§ ´õÀÌ»ó À±°û¼± ¸ø º¸°Ô ÇÔ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	if (!bIsOnBoard)
 	{
 		SetHighLightShowEnable(false);
@@ -204,12 +207,12 @@ void AXRDefenseCharacter::SetIsOnBoard(bool isOnBoard)
 {
 	bIsOnBoard = isOnBoard;
 
-	// »õ·Î º¸µå À§¿¡ ³õÀÎ °æ¿ì
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	if (isOnBoard)
 	{
 		SetHighLightShowEnable(true);
 	}
-	else // º¸µå¿¡¼­ ¶°³­ °æ¿ì
+	else // ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	{
 		SetHighLightShowEnable(false);
 	}
@@ -219,10 +222,10 @@ void AXRDefenseCharacter::SetActorPosition(FVector Position)
 {
 	FVector FinalPosition = Position;
 
-	// Áö±Ý ³õÀ¸·Á´Â °ø°£ÀÌ Ä³¸¯ÅÍ¸¦ ³õÀ» ¼ö ¾ø´Â °ø°£ÀÌ¶ó¸é
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½
 	if (!CheckBeneathIsPlacableArea(FinalPosition))
 	{
-		// ³õÀ» ¼ö ÀÖ´Â °ø°£Áß¿¡¼­ °¡Àå °¡±î¿î °÷À» Ã£¾Æ¾ß ÇÒ °ÍÀÌ´Ù
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¾ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½
 		FinalPosition = LastPlacablePosition;
 	}
 
@@ -298,15 +301,7 @@ void AXRDefenseCharacter::Death()
 		PlayAnimMontage(DeathMontage);
 	}
 
-	if (DeathSound)
-	{
-		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
-	}
-
-	if (DeathParticle)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathParticle, GetActorLocation(), GetActorRotation(), FVector(0.1f, 0.1f, 0.1f ));
-	}
+	PlayDeathParticleSound();
 
 	SetLifeSpan(DeathTime);
 

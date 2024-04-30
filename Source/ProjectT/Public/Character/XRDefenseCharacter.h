@@ -56,6 +56,14 @@ protected:
 	AActor* CombatTarget = nullptr;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UNiagaraSystem* DeathParticle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* DeathSound;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void PlayDeathParticleSound();
 
 private:
 	UPROPERTY(EditAnyWhere)
@@ -94,11 +102,11 @@ private:
 
 
 	//Material
-	// ±âº» Material
+	// ï¿½âº» Material
 	UPROPERTY(VisibleAnywhere)
 	class UMaterialInterface* DefaultMaterial;
 
-	// µ¥¹ÌÁö ¹Þ¾ÒÀ» ¶§ÀÇ Material
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Material
 	UPROPERTY(EditAnywhere)
 	class UMaterialInterface* DamagedMaterial;
 	//Material
@@ -108,19 +116,11 @@ private:
 
 	FTimerHandle DamageMaterialTimerHandle;
 
-	// Å¸ÀÌ¸Ó°¡ ¸¸·áµÉ ¶§ È£ÃâµÉ ÇÔ¼ö
+	// Å¸ï¿½Ì¸Ó°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 	void DamageMaterialTimerExpired();
 
-	// Å¸ÀÌ¸Ó¸¦ ½ÃÀÛÇÏ´Â ÇÔ¼ö
+	// Å¸ï¿½Ì¸Ó¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
 	void DamageMaterialStartTimer(float TimeDuration);
-
-
-	UPROPERTY(EditAnywhere)
-	UParticleSystem* DeathParticle;
-
-	UPROPERTY(EditAnywhere)
-	USoundBase* DeathSound;
-
 
 
 	UPROPERTY(VisibleAnyWhere)

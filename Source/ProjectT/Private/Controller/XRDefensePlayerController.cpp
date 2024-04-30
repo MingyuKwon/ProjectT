@@ -19,7 +19,7 @@ void AXRDefensePlayerController::SetupInputComponent()
 
 void AXRDefensePlayerController::LeftGrabStart()
 {
-	// ¹°Ã¼¸¦ ÁýÀ» ¼ö ÀÖ´Â °æ¿ì´Â, ¸¶¿ì½º°¡ ¹°Ã¼ À§¿¡ ÀÖ°í, ±× ¹°Ã¼°¡ ÇÏÀÌ¶óÀÌÆ® µÇ¾î ÀÖ°í, ±× ¹°Ã¼°¡ º¸µåÀ§¿¡ ÀÖÁö ¾ÊÀº °æ¿ì¿¡¸¸ °¡´É
+	// ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½, ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½Ç¾ï¿½ ï¿½Ö°ï¿½, ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (currentLeftTarget && currentLeftTarget->GetIsHighlighted() && !currentLeftTarget->GetIsOnBoard())
 	{
 		CurrentLeftGrabActor = Cast<AActor>(currentLeftTarget);
@@ -29,7 +29,7 @@ void AXRDefensePlayerController::LeftGrabStart()
 
 void AXRDefensePlayerController::RightGrabStart()
 {
-	// ¹°Ã¼¸¦ ÁýÀ» ¼ö ÀÖ´Â °æ¿ì´Â, ¸¶¿ì½º°¡ ¹°Ã¼ À§¿¡ ÀÖ°í, ±× ¹°Ã¼°¡ ÇÏÀÌ¶óÀÌÆ® µÇ¾î ÀÖ°í, ±× ¹°Ã¼°¡ º¸µåÀ§¿¡ ÀÖÁö ¾ÊÀº °æ¿ì¿¡¸¸ °¡´É
+	// ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½, ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½Ç¾ï¿½ ï¿½Ö°ï¿½, ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (currentRightTarget && currentRightTarget->GetIsHighlighted() && !currentRightTarget->GetIsOnBoard())
 	{
 		CurrentRightGrabActor = Cast<AActor>(currentRightTarget);
@@ -43,7 +43,7 @@ void AXRDefensePlayerController::LeftGrabEnd()
 
 	if (CurrentLeftGrabActorOutLineInterface)
 	{
-		// ÀÚ±â ¾Æ·¡¿¡ º¸µå°¡ ÀÖ´ÂÁö ¾ø´ÂÁö È®ÀÎÇÏ°í ±× °ªÀ» ÀÎÅÍÆäÀÌ½ºÀÇ set board ÇÔ¼ö¸¦ »ç¿ëÇØ¼­ ¹èÁ¤ÇÑ´Ù
+		// ï¿½Ú±ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½å°¡ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ set board ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 		CurrentLeftGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentLeftGrabActorOutLineInterface));
 
 		CurrentLeftGrabActorOutLineInterface->SetHighLightOff();
@@ -57,7 +57,7 @@ void AXRDefensePlayerController::RightGrabEnd()
 
 	if (CurrentRightGrabActorOutLineInterface)
 	{
-		// ÀÚ±â ¾Æ·¡¿¡ º¸µå°¡ ÀÖ´ÂÁö ¾ø´ÂÁö È®ÀÎÇÏ°í ±× °ªÀ» ÀÎÅÍÆäÀÌ½ºÀÇ set board ÇÔ¼ö¸¦ »ç¿ëÇØ¼­ ¹èÁ¤ÇÑ´Ù
+		// ï¿½Ú±ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½å°¡ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ set board ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentRightGrabActorOutLineInterface));
 
 		CurrentRightGrabActorOutLineInterface->SetHighLightOff();
@@ -116,7 +116,7 @@ bool AXRDefensePlayerController::CheckBeneathIsBoard(IOutlineInterface* target)
 	FHitResult LinetraceResult;
 	GetWorld()->LineTraceSingleByChannel(LinetraceResult, targetActor->GetActorLocation(), targetActor->GetActorLocation() + FVector::DownVector * TRACE_LENGTH, ECollisionChannel::ECC_BoardTraceChannel);
 
-	// º¸µå ÆÇÀ» ±âÁØÀ¸·Î ¶óÀÎ Æ®·¹ÀÌ½ÌÀ» ÇÏ¹Ç·Î º¸µåÆÇ°ú ºÎµúÇû´Ù¸é ¾Æ·¡´Â º¸µåÆÇÀÌ ¸Â´Ù
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½Ï¹Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½Ù¸ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â´ï¿½
 	return LinetraceResult.bBlockingHit;
 }
 
@@ -124,10 +124,10 @@ void AXRDefensePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ¸¶¿ì½º Ä¿¼­ È°¼ºÈ­
+	// ï¿½ï¿½ï¿½ì½º Ä¿ï¿½ï¿½ È°ï¿½ï¿½È­
 	bShowMouseCursor = true;
 
-	// ¸¶¿ì½º ÀÔ·ÂÀ» UI¿Í °ÔÀÓ ¸ðµÎ¿¡ »ç¿ëÇÏµµ·Ï ¼³Á¤
+	// ï¿½ï¿½ï¿½ì½º ï¿½Ô·ï¿½ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
 
@@ -150,23 +150,23 @@ void AXRDefensePlayerController::CheckLeftOverlappingActors(UCapsuleComponent* C
 	{
 		IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Actor);
 
-		// ¸¸¾à °ãÄ¡´Â ¹°Ã¼°¡ interface »ó¼ÓÀ» ¹Þ´Â´Ù¸é
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ interface ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´Â´Ù¸ï¿½
 		if (TargetOutLineInterface)
 		{
-			//ÇÏÀÌ¶óÀÌÆ®¸¦ ±× ¹°Ã¼·Î ¿Å±è
+			//ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Å±ï¿½
 			FinalTargetOutLineInterface = TargetOutLineInterface;
 
-			// ±×¸®°í ±× ¹°Ã¼°¡ ÇöÀç ÇÏÀÌ¶óÀÌÆ® µÇ°í ÀÖ´Â ¹°Ã¼¶ó¸é
+			// ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½Ç°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½
 			if (TargetOutLineInterface == currentLeftTarget)
 			{
-				//¹Ýº¹¹® Á¾·á
+				//ï¿½Ýºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				break;
 			}
 		}
 	}
 
-	// ÀÌ °á°ú·Î, ¸¸¾à ±âÁ¸¿¡ °ãÄ¡°í ÀÖ´ø °Í°ú µ¿ÀÏÇÑ °ÍÀÌ °ãÄ¡°Ô µÈ´Ù¸é ±× ¹°Ã¼°¡ ¿ì¼±ÀûÀ¸·Î ÇÏÀÌ¶óÀÌÆ® µÈ´Ù
-	// ¸¸¾à °ãÄ¡´Â°Ô ±âÁ¸ °ÍÀÌ ¾ø°í »õ·Î¿î °Í¸¸ ÀÖ´Ù¸é ±× ¹°Ã¼°¡ ÇÏÀÌ¶óÀÌÆ®
+	// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½È´Ù¸ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½È´ï¿½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Í¸ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ®
 
 	pastLeftTarget = currentLeftTarget;
 	currentLeftTarget = FinalTargetOutLineInterface;
@@ -193,23 +193,23 @@ void AXRDefensePlayerController::CheckRightOverlappingActors(UCapsuleComponent* 
 	{
 		IOutlineInterface* TargetOutLineInterface = Cast<IOutlineInterface>(Actor);
 
-		// ¸¸¾à °ãÄ¡´Â ¹°Ã¼°¡ interface »ó¼ÓÀ» ¹Þ´Â´Ù¸é
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ interface ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´Â´Ù¸ï¿½
 		if (TargetOutLineInterface)
 		{
-			//ÇÏÀÌ¶óÀÌÆ®¸¦ ±× ¹°Ã¼·Î ¿Å±è
+			//ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Å±ï¿½
 			FinalTargetOutLineInterface = TargetOutLineInterface;
 
-			// ±×¸®°í ±× ¹°Ã¼°¡ ÇöÀç ÇÏÀÌ¶óÀÌÆ® µÇ°í ÀÖ´Â ¹°Ã¼¶ó¸é
+			// ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½Ç°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½
 			if (TargetOutLineInterface == currentRightTarget)
 			{
-				//¹Ýº¹¹® Á¾·á
+				//ï¿½Ýºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				break;
 			}
 		}
 	}
 
-	// ÀÌ °á°ú·Î, ¸¸¾à ±âÁ¸¿¡ °ãÄ¡°í ÀÖ´ø °Í°ú µ¿ÀÏÇÑ °ÍÀÌ °ãÄ¡°Ô µÈ´Ù¸é ±× ¹°Ã¼°¡ ¿ì¼±ÀûÀ¸·Î ÇÏÀÌ¶óÀÌÆ® µÈ´Ù
-	// ¸¸¾à °ãÄ¡´Â°Ô ±âÁ¸ °ÍÀÌ ¾ø°í »õ·Î¿î °Í¸¸ ÀÖ´Ù¸é ±× ¹°Ã¼°¡ ÇÏÀÌ¶óÀÌÆ®
+	// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½È´Ù¸ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½È´ï¿½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Í¸ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ®
 
 	pastRightTarget = currentRightTarget;
 	currentRightTarget = FinalTargetOutLineInterface;
@@ -252,7 +252,7 @@ bool AXRDefensePlayerController::CheckOutLineInterfaceLeft(AActor* Target, bool 
 		}
 
 	}
-	else // ¸¸¾à Ä³¸¯ÅÍ¿¡¼­ ¶¼Áö¸é¼­ È£ÃâµÈ °Å¶ó¸é 
+	else // ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ È£ï¿½ï¿½ï¿½ ï¿½Å¶ï¿½ï¿½ 
 	{
 		pastLeftTarget = currentLeftTarget;
 		currentLeftTarget = nullptr;
@@ -289,7 +289,7 @@ bool AXRDefensePlayerController::CheckOutLineInterfaceRight(AActor* Target, bool
 		}
 
 	}
-	else // ¸¸¾à Ä³¸¯ÅÍ¿¡¼­ ¶¼Áö¸é¼­ È£ÃâµÈ °Å¶ó¸é 
+	else // ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ È£ï¿½ï¿½ï¿½ ï¿½Å¶ï¿½ï¿½ 
 	{
 		pastRightTarget = currentRightTarget;
 		currentRightTarget = nullptr;
@@ -310,7 +310,7 @@ void AXRDefensePlayerController::TraceUnderMouse()
 	FHitResult UnderMouseHitResult;
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, UnderMouseHitResult);
 
-	// ¸¶¿ì½º ¾Æ·¡¿¡ ¾Æ¹«°Íµµ hit ÇÏÁö ¸øÇß´Ù¸é ±×³É ³Ñ¾î°¨
+	// ï¿½ï¿½ï¿½ì½º ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½Æ¹ï¿½ï¿½Íµï¿½ hit ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Ù¸ï¿½ ï¿½×³ï¿½ ï¿½Ñ¾î°¨
 	if (!UnderMouseHitResult.bBlockingHit)
 	{
 		if (pastTarget)
