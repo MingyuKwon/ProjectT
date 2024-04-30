@@ -31,11 +31,11 @@ AProjectile::AProjectile()
     
     Projectile_Movement = CreateDefaultSubobject<UNotHitSelf_PMC>(FName("NoProjectile Movement"));
     Projectile_Movement->bIsHomingProjectile = false;
-    Projectile_Movement->HomingAccelerationMagnitude = 2000.f; // À¯µµ ÅºÀÇ È¨¹Ö °¡¼Óµµ ¼³Á¤
+    Projectile_Movement->HomingAccelerationMagnitude = 2000.f; // ï¿½ï¿½ï¿½ï¿½ Åºï¿½ï¿½ È¨ï¿½ï¿½ ï¿½ï¿½ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
 
     Projectile_Movement->bRotationFollowsVelocity = true;
     Projectile_Movement->MaxSpeed = 10000.f;
-    Projectile_Movement->InitialSpeed = 2000.f; // ÃÊ±â ¼Óµµ ¼³Á¤
+    Projectile_Movement->InitialSpeed = 2000.f; // ï¿½Ê±ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
     
     
 }
@@ -45,7 +45,7 @@ void AProjectile::SetTarget(AActor* Target)
 {
     if (Projectile_Movement && Target)
     {
-        // Å¸°ÙÀÇ SkeletalMeshComponent ¶Ç´Â StaticMeshComponent µîÀ» È¨¹Ö Å¸°ÙÀ¸·Î ¼³Á¤
+        // Å¸ï¿½ï¿½ï¿½ï¿½ SkeletalMeshComponent ï¿½Ç´ï¿½ StaticMeshComponent ï¿½ï¿½ï¿½ï¿½ È¨ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         UPrimitiveComponent* TargetComponent = Cast<UPrimitiveComponent>(Target->GetRootComponent());
         if (TargetComponent)
         {
