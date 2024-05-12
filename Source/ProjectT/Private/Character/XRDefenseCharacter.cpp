@@ -238,6 +238,14 @@ void AXRDefenseCharacter::SetActorPosition(FVector Position)
 
 }
 
+bool AXRDefenseCharacter::CheckBeneathIsBoard()
+{
+	FHitResult LinetraceResult;
+	GetWorld()->LineTraceSingleByChannel(LinetraceResult, GetActorLocation(), GetActorLocation() + FVector::DownVector * TRACE_LENGTH, ECollisionChannel::ECC_BoardTraceChannel);
+
+	return LinetraceResult.bBlockingHit;
+}
+
 void AXRDefenseCharacter::Attack()
 {
 	if (AttackMontage)

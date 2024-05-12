@@ -125,7 +125,7 @@ private:
 	UPROPERTY(VisibleAnyWhere)
 	bool bIsHighlighted;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnyWhere)
 	bool bIsOnBoard = false;
 
 
@@ -175,9 +175,15 @@ public:
 	// OutlineINterface
 	FORCEINLINE virtual bool GetIsHighlighted() override { return bIsHighlighted; }
 	FORCEINLINE virtual bool GetIsOnBoard() override { return bIsOnBoard; }
+
+	UFUNCTION(BlueprintCallable)
 	virtual void SetIsOnBoard(bool isOnBoard) override;
 
 	virtual void SetActorPosition(FVector Position) override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual bool CheckBeneathIsBoard() override;
+
 
 	// OutlineINterface
 

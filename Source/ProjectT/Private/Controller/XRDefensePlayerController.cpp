@@ -44,7 +44,7 @@ void AXRDefensePlayerController::LeftGrabEnd()
 	if (CurrentLeftGrabActorOutLineInterface)
 	{
 		// �ڱ� �Ʒ��� ���尡 �ִ��� ������ Ȯ���ϰ� �� ���� �������̽��� set board �Լ��� ����ؼ� �����Ѵ�
-		CurrentLeftGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentLeftGrabActorOutLineInterface));
+		CurrentLeftGrabActorOutLineInterface->SetIsOnBoard(CurrentLeftGrabActorOutLineInterface->CheckBeneathIsBoard());
 
 		CurrentLeftGrabActorOutLineInterface->SetHighLightOff();
 	}
@@ -58,7 +58,7 @@ void AXRDefensePlayerController::RightGrabEnd()
 	if (CurrentRightGrabActorOutLineInterface)
 	{
 		// �ڱ� �Ʒ��� ���尡 �ִ��� ������ Ȯ���ϰ� �� ���� �������̽��� set board �Լ��� ����ؼ� �����Ѵ�
-		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CheckBeneathIsBoard(CurrentRightGrabActorOutLineInterface));
+		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CurrentLeftGrabActorOutLineInterface->CheckBeneathIsBoard());
 
 		CurrentRightGrabActorOutLineInterface->SetHighLightOff();
 	}
@@ -107,18 +107,6 @@ void AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPos
 	}
 }
 
-
-bool AXRDefensePlayerController::CheckBeneathIsBoard(IOutlineInterface* target)
-{
-	AActor* targetActor = Cast<AActor>(target);
-	if (targetActor == nullptr) return false;
-
-	FHitResult LinetraceResult;
-	GetWorld()->LineTraceSingleByChannel(LinetraceResult, targetActor->GetActorLocation(), targetActor->GetActorLocation() + FVector::DownVector * TRACE_LENGTH, ECollisionChannel::ECC_BoardTraceChannel);
-
-	// ���� ���� �������� ���� Ʈ���̽��� �ϹǷ� �����ǰ� �ε����ٸ� �Ʒ��� �������� �´�
-	return LinetraceResult.bBlockingHit;
-}
 
 void AXRDefensePlayerController::BeginPlay()
 {
