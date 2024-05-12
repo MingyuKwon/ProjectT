@@ -105,6 +105,8 @@ void AXRDefenseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	UE_LOG(LogTemp, Warning, TEXT("PossessedBy"));
+
 	if (BehaviorTree && NewController)
 	{
 		XRDefenceAIController = Cast<AXRDefenceAIController>(NewController);

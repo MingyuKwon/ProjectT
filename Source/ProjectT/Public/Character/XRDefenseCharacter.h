@@ -29,7 +29,6 @@ public:
 	virtual void SetHighLightOn();
 	virtual void SetHighLightOff();
 
-
 protected:
 	virtual void BeginPlay() override;
 
