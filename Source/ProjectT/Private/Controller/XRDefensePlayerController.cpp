@@ -58,7 +58,7 @@ void AXRDefensePlayerController::RightGrabEnd()
 	if (CurrentRightGrabActorOutLineInterface)
 	{
 		// �ڱ� �Ʒ��� ���尡 �ִ��� ������ Ȯ���ϰ� �� ���� �������̽��� set board �Լ��� ����ؼ� �����Ѵ�
-		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CurrentLeftGrabActorOutLineInterface->CheckBeneathIsBoard());
+		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CurrentRightGrabActorOutLineInterface->CheckBeneathIsBoard());
 
 		CurrentRightGrabActorOutLineInterface->SetHighLightOff();
 	}
