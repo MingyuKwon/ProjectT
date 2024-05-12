@@ -19,7 +19,6 @@ void AXRDefensePlayerController::SetupInputComponent()
 
 void AXRDefensePlayerController::LeftGrabStart()
 {
-	// ��ü�� ���� �� �ִ� ����, ���콺�� ��ü ���� �ְ�, �� ��ü�� ���̶���Ʈ �Ǿ� �ְ�, �� ��ü�� �������� ���� ���� ��쿡�� ����
 	if (currentLeftTarget && currentLeftTarget->GetIsHighlighted() && !currentLeftTarget->GetIsOnBoard())
 	{
 		CurrentLeftGrabActor = Cast<AActor>(currentLeftTarget);
@@ -29,7 +28,6 @@ void AXRDefensePlayerController::LeftGrabStart()
 
 void AXRDefensePlayerController::RightGrabStart()
 {
-	// ��ü�� ���� �� �ִ� ����, ���콺�� ��ü ���� �ְ�, �� ��ü�� ���̶���Ʈ �Ǿ� �ְ�, �� ��ü�� �������� ���� ���� ��쿡�� ����
 	if (currentRightTarget && currentRightTarget->GetIsHighlighted() && !currentRightTarget->GetIsOnBoard())
 	{
 		CurrentRightGrabActor = Cast<AActor>(currentRightTarget);
@@ -43,7 +41,6 @@ void AXRDefensePlayerController::LeftGrabEnd()
 
 	if (CurrentLeftGrabActorOutLineInterface)
 	{
-		// �ڱ� �Ʒ��� ���尡 �ִ��� ������ Ȯ���ϰ� �� ���� �������̽��� set board �Լ��� ����ؼ� �����Ѵ�
 		CurrentLeftGrabActorOutLineInterface->SetIsOnBoard(CurrentLeftGrabActorOutLineInterface->CheckBeneathIsBoard());
 
 		CurrentLeftGrabActorOutLineInterface->SetHighLightOff();
@@ -57,7 +54,6 @@ void AXRDefensePlayerController::RightGrabEnd()
 
 	if (CurrentRightGrabActorOutLineInterface)
 	{
-		// �ڱ� �Ʒ��� ���尡 �ִ��� ������ Ȯ���ϰ� �� ���� �������̽��� set board �Լ��� ����ؼ� �����Ѵ�
 		CurrentRightGrabActorOutLineInterface->SetIsOnBoard(CurrentRightGrabActorOutLineInterface->CheckBeneathIsBoard());
 
 		CurrentRightGrabActorOutLineInterface->SetHighLightOff();
@@ -65,10 +61,8 @@ void AXRDefensePlayerController::RightGrabEnd()
 	CurrentRightGrabActorOutLineInterface = nullptr;
 }
 
-void AXRDefensePlayerController::LeftGrabCheck(float DeltaTime , FVector GrabPosition, FVector& MovingPointLocation)
+bool AXRDefensePlayerController::LeftGrabCheck(float DeltaTime , FVector GrabPosition)
 {
-	MovingPointLocation = FVector::ZeroVector;
-
 	if (bLeftGrabGestureAvailable)
 	{
 		CurrentLeftGrabActorOutLineInterface = CurrentLeftGrabActorOutLineInterface == nullptr ? Cast<IOutlineInterface>(CurrentLeftGrabActor) : CurrentLeftGrabActorOutLineInterface;
@@ -77,19 +71,19 @@ void AXRDefensePlayerController::LeftGrabCheck(float DeltaTime , FVector GrabPos
 		{
 			FVector MovingPoint = GrabPosition;
 			CurrentLeftGrabActorOutLineInterface->SetActorPosition(MovingPoint);
-			MovingPointLocation = MovingPoint;
-
 			CurrentLeftGrabActorOutLineInterface->SetHighLightOn();
+
+			return true;
 		}
 
 	}
 
+	return false;
+
 }
 
-void AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPosition, FVector& MovingPointLocation)
+bool AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPosition)
 {
-	MovingPointLocation = FVector::ZeroVector;
-
 
 	if (bRightGrabGestureAvailable)
 	{
@@ -99,12 +93,16 @@ void AXRDefensePlayerController::RightGrabCheck(float DeltaTime, FVector GrabPos
 		{
 			FVector MovingPoint = GrabPosition;
 			CurrentRightGrabActorOutLineInterface->SetActorPosition(MovingPoint);
-			MovingPointLocation = MovingPoint;
-
 			CurrentRightGrabActorOutLineInterface->SetHighLightOn();
+
+			return true;
+
 		}
 
 	}
+
+	return false;
+
 }
 
 
