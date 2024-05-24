@@ -52,7 +52,7 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void LeftGrabEnd();
 	UFUNCTION(BlueprintCallable)
-	void LeftGrabCheck(float DeltaTime, FVector GrabPosition, FVector& MovingPointLocation);
+	bool LeftGrabCheck(float DeltaTime, FVector GrabPosition);
 
 	AActor* CurrentLeftGrabActor = nullptr;
 	IOutlineInterface* CurrentLeftGrabActorOutLineInterface = nullptr;
@@ -67,7 +67,7 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void RightGrabEnd();
 	UFUNCTION(BlueprintCallable)
-	void RightGrabCheck(float DeltaTime, FVector GrabPosition, FVector& MovingPointLocation);
+	bool RightGrabCheck(float DeltaTime, FVector GrabPosition);
 
 	AActor* CurrentRightGrabActor = nullptr;
 	IOutlineInterface* CurrentRightGrabActorOutLineInterface = nullptr;
@@ -78,9 +78,6 @@ private:
 
 	// 현재 마우스의 위치를 바닥에 투영하면 어디에 부딪히는지를 구한다
 	//void LineTraceMouseToFloor(FHitResult& LinetraceResult);
-
-	bool CheckBeneathIsBoard(IOutlineInterface* target);
-
 
 
 	//FVector FromMouseToFloorTracingPoint;

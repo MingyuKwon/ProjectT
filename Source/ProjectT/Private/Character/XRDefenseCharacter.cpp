@@ -105,6 +105,8 @@ void AXRDefenseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	UE_LOG(LogTemp, Warning, TEXT("PossessedBy"));
+
 	if (BehaviorTree && NewController)
 	{
 		XRDefenceAIController = Cast<AXRDefenceAIController>(NewController);
@@ -234,6 +236,14 @@ void AXRDefenseCharacter::SetActorPosition(FVector Position)
 	LastPlacablePosition = FinalPosition;
 	SetActorLocation(FinalPosition);
 
+}
+
+bool AXRDefenseCharacter::CheckBeneathIsBoard()
+{
+	FHitResult LinetraceResult;
+	GetWorld()->LineTraceSingleByChannel(LinetraceResult, GetActorLocation(), GetActorLocation() + FVector::DownVector * TRACE_LENGTH, ECollisionChannel::ECC_BoardTraceChannel);
+
+	return LinetraceResult.bBlockingHit;
 }
 
 void AXRDefenseCharacter::Attack()

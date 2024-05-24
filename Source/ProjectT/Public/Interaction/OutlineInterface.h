@@ -32,4 +32,7 @@ public:
 	virtual void SetIsOnBoard(bool isOnBoard) = 0;
 
 	virtual void SetActorPosition(FVector Position) = 0;
+
+	virtual bool CheckBeneathIsBoard() = 0;
+
 };

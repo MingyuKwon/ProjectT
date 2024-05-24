@@ -4,3 +4,8 @@
 #include "Interaction/OutlineInterface.h"
 
 // Add default functionality here for any IOutlineInterface functions that are not pure virtual.
+
+bool IOutlineInterface::CheckBeneathIsBoard()
+{
+    return false;
+}
