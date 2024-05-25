@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Character/XRDefenseCharacter.h"
-
 #include "XRDefensePlayerController.generated.h"
 
 /**
@@ -32,6 +31,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool bRightGrabGestureAvailable = false;
 
+	UFUNCTION(BlueprintCallable)
+	void ProjectBoxCollisionPoints(class UBoxComponent* BoxCollision);
+	
 	
 	///////////////////////////////Depricated///////////////////////////////////
 	UFUNCTION(BlueprintCallable)

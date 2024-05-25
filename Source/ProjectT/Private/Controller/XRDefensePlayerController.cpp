@@ -6,14 +6,63 @@
 #include "Kismet/GameplayStatics.h"
 #include "ProjectT/ProjectT.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 
 
 void AXRDefensePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+}
 
-	//InputComponent->BindAction("LeftClick", IE_Pressed, this, &AXRDefensePlayerController::LeftGrabStart);
-	//InputComponent->BindAction("LeftClick", IE_Released, this, &AXRDefensePlayerController::LeftGrabEnd);
+void AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCollision)
+{
+	if (!BoxCollision) return;
+
+	FVector Origin;
+	FVector Extent;
+	Extent = BoxCollision->GetScaledBoxExtent();
+	Origin = BoxCollision->GetComponentLocation();
+	FRotator Rotation = BoxCollision->GetComponentRotation();
+
+	TArray<FVector> BoxPoints;
+	BoxPoints.Add(FVector(-Extent.X, -Extent.Y, -Extent.Z));
+	BoxPoints.Add(FVector(-Extent.X, Extent.Y, -Extent.Z));
+	BoxPoints.Add(FVector(Extent.X, -Extent.Y, -Extent.Z));
+	BoxPoints.Add(FVector(Extent.X, Extent.Y, -Extent.Z));
+	BoxPoints.Add(FVector(-Extent.X, -Extent.Y, Extent.Z));
+	BoxPoints.Add(FVector(-Extent.X, Extent.Y, Extent.Z));
+	BoxPoints.Add(FVector(Extent.X, -Extent.Y, Extent.Z));
+	BoxPoints.Add(FVector(Extent.X, Extent.Y, Extent.Z));
+
+	TArray<FVector> TransformedPoints;
+	for (const FVector& Point : BoxPoints)
+	{
+		// 회전 적용
+		FVector RotatedPoint = Rotation.RotateVector(Point);
+		// 위치 적용
+		FVector TransformedPoint = Origin + RotatedPoint;
+		TransformedPoints.Add(TransformedPoint);
+	}
+
+	for (const FVector& Point : TransformedPoints)
+	{
+		DrawDebugPoint(GetWorld(), Point, 15.0f, FColor::Red, false, -1.0f, 0);
+	}
+
+	/*
+	TArray<FVector> ProjectedPoints;
+	for (const FVector& Point : TransformedPoints)
+	{
+		FVector ProjectedPoint = Point;
+		ProjectedPoint.Z = 0; // z=0 평면으로 투사
+		ProjectedPoints.Add(ProjectedPoint);
+	}
+
+	for (const FVector& Point : ProjectedPoints)
+	{
+		DrawDebugPoint(GetWorld(), Point, 10.0f, FColor::Red, true, -1.0f, 0);
+	}
+	*/
 
 }
 
