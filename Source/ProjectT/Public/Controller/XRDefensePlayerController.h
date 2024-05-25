@@ -32,7 +32,10 @@ public:
 	bool bRightGrabGestureAvailable = false;
 
 	UFUNCTION(BlueprintCallable)
-	void ProjectBoxCollisionPoints(class UBoxComponent* BoxCollision);
+	TArray<FVector> ProjectBoxCollisionPoints(class UBoxComponent* BoxCollision);
+
+	bool CheckBeneathIsBoard(FVector& Point);
+
 	
 	
 	///////////////////////////////Depricated///////////////////////////////////

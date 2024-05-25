@@ -14,9 +14,11 @@ void AXRDefensePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 }
 
-void AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCollision)
+TArray<FVector> AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCollision)
 {
-	if (!BoxCollision) return;
+	TArray<FVector> ProjectedPoints;
+
+	if (!BoxCollision) return ProjectedPoints;
 
 	FVector Origin;
 	FVector Extent;
@@ -37,33 +39,33 @@ void AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCol
 	TArray<FVector> TransformedPoints;
 	for (const FVector& Point : BoxPoints)
 	{
-		// 회전 적용
 		FVector RotatedPoint = Rotation.RotateVector(Point);
-		// 위치 적용
 		FVector TransformedPoint = Origin + RotatedPoint;
 		TransformedPoints.Add(TransformedPoint);
 	}
 
-	for (const FVector& Point : TransformedPoints)
+	for (FVector& Point : TransformedPoints)
 	{
-		DrawDebugPoint(GetWorld(), Point, 15.0f, FColor::Red, false, -1.0f, 0);
+		if (CheckBeneathIsBoard(Point))
+		{
+			ProjectedPoints.Add(Point);
+		}
 	}
 
-	/*
-	TArray<FVector> ProjectedPoints;
-	for (const FVector& Point : TransformedPoints)
+	return ProjectedPoints;
+}
+
+bool AXRDefensePlayerController::CheckBeneathIsBoard(FVector& Point)
+{
+	FHitResult LinetraceResult;
+	GetWorld()->LineTraceSingleByChannel(LinetraceResult, Point, Point + FVector::DownVector * TRACE_LENGTH, ECollisionChannel::ECC_BoardTraceChannel);
+
+	if (LinetraceResult.bBlockingHit)
 	{
-		FVector ProjectedPoint = Point;
-		ProjectedPoint.Z = 0; // z=0 평면으로 투사
-		ProjectedPoints.Add(ProjectedPoint);
+		Point = LinetraceResult.ImpactPoint;
 	}
 
-	for (const FVector& Point : ProjectedPoints)
-	{
-		DrawDebugPoint(GetWorld(), Point, 10.0f, FColor::Red, true, -1.0f, 0);
-	}
-	*/
-
+	return LinetraceResult.bBlockingHit;
 }
 
 void AXRDefensePlayerController::LeftGrabStart()
