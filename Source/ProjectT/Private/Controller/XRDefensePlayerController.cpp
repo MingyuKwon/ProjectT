@@ -14,7 +14,7 @@ void AXRDefensePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 }
 
-TArray<FVector> AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCollision)
+TArray<FVector> AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCollision, float Interval)
 {
 	TArray<FVector> ProjectedPoints;
 
@@ -27,15 +27,13 @@ TArray<FVector> AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxCompon
 	FRotator Rotation = BoxCollision->GetComponentRotation();
 
 	TArray<FVector> BoxPoints;
-	BoxPoints.Add(FVector(-Extent.X, -Extent.Y, -Extent.Z));
-	BoxPoints.Add(FVector(-Extent.X, Extent.Y, -Extent.Z));
-	BoxPoints.Add(FVector(Extent.X, -Extent.Y, -Extent.Z));
-	BoxPoints.Add(FVector(Extent.X, Extent.Y, -Extent.Z));
 	BoxPoints.Add(FVector(-Extent.X, -Extent.Y, Extent.Z));
-	BoxPoints.Add(FVector(-Extent.X, Extent.Y, Extent.Z));
 	BoxPoints.Add(FVector(Extent.X, -Extent.Y, Extent.Z));
+	BoxPoints.Add(FVector(-Extent.X, Extent.Y, Extent.Z));
 	BoxPoints.Add(FVector(Extent.X, Extent.Y, Extent.Z));
 
+
+	// 로컬 좌표계를 월드 좌표계로 변환
 	TArray<FVector> TransformedPoints;
 	for (const FVector& Point : BoxPoints)
 	{
@@ -44,11 +42,26 @@ TArray<FVector> AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxCompon
 		TransformedPoints.Add(TransformedPoint);
 	}
 
-	for (FVector& Point : TransformedPoints)
+	// 직사각형의 네 개의 꼭짓점
+	FVector P1 = TransformedPoints[0];
+	FVector P2 = TransformedPoints[1];
+	FVector P3 = TransformedPoints[2];
+	FVector P4 = TransformedPoints[3];
+
+	// P1-P2-P3-P4 평면을 Interval 간격으로 분할
+	for (float x = 0.0f; x <= 1.0f; x += Interval)
 	{
-		if (CheckBeneathIsBoard(Point))
+		for (float y = 0.0f; y <= 1.0f; y += Interval)
 		{
-			ProjectedPoints.Add(Point);
+			// 두 변을 따라 보간
+			FVector Interp1 = FMath::Lerp(P1, P2, x);
+			FVector Interp2 = FMath::Lerp(P3, P4, x);
+			// 보간된 두 점을 연결
+			FVector Point = FMath::Lerp(Interp1, Interp2, y);
+			if (CheckBeneathIsBoard(Point))
+			{
+				ProjectedPoints.Add(Point);
+			}
 		}
 	}
 
