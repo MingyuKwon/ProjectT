@@ -7,11 +7,45 @@
 #include "ProjectT/ProjectT.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 
 
 void AXRDefensePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+}
+
+TArray<FVector> AXRDefensePlayerController::ProjectSphereCollisionPoints(USphereComponent* SphereCollision, float Interval)
+{
+	TArray<FVector> ProjectedPoints;
+
+	if (!SphereCollision) return ProjectedPoints;
+
+	FVector Origin = SphereCollision->GetComponentLocation();
+	float Radius = SphereCollision->GetScaledSphereRadius();
+
+	// 구의 평면을 일정 간격으로 분할
+	for (float Theta = 0.0f; Theta <= 360.0f; Theta += Interval)
+	{
+		for (float Phi = 0.0f; Phi <= 360.0f; Phi += Interval)
+		{
+			// 구면 좌표계를 사용하여 평면 위의 점 계산
+			float RadTheta = FMath::DegreesToRadians(Theta);
+			float RadPhi = FMath::DegreesToRadians(Phi);
+
+			FVector Point;
+			Point.X = Origin.X + Radius * FMath::Cos(RadTheta) * FMath::Sin(RadPhi);
+			Point.Y = Origin.Y + Radius * FMath::Sin(RadTheta) * FMath::Sin(RadPhi);
+			Point.Z = Origin.Z; // z=0 평면으로 자름
+
+			if (CheckBeneathIsBoard(Point))
+			{
+				ProjectedPoints.Add(Point);
+			}
+		}
+	}
+
+	return ProjectedPoints;
 }
 
 TArray<FVector> AXRDefensePlayerController::ProjectBoxCollisionPoints(UBoxComponent* BoxCollision, float Interval)
