@@ -34,6 +34,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<FVector> ProjectBoxCollisionPoints(class UBoxComponent* BoxCollision, float Interval);
 
+	UFUNCTION(BlueprintCallable)
+	TArray<FVector> ProjectSphereCollisionPoints(USphereComponent* SphereCollision, float Interval);
+
+
 	bool CheckBeneathIsBoard(FVector& Point);
 
 	
